@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Interface 기반으로 만들어짐 -->
+<mapper namespace="kr.or.ddit.member.dao.MemberDAO">
+	<select id="selectMemberForAuth" parameterType="MemberVO" resultType="MemberVO">
+		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_HP, MEM_ADD1
+		FROM MEMBER
+		WHERE MEM_ID = #{memId}
+	</select>
+	<select id="selectMemberList" resultType="MemberVO">
+		SELECT MEM_ID, MEM_NAME, MEM_HP,
+			   MEM_ADD1, MEM_MAIL, MEM_MILEAGE
+		FROM MEMBER
+	</select>
+	<insert id="insertMember" parameterType="MemberVO">
+		INSERT INTO MEMBER (                                                          
+		    MEM_ID,			    MEM_PASS,			    MEM_NAME,                  
+		    MEM_REGNO1,			MEM_REGNO2,			    MEM_BIR,               
+		    MEM_ZIP,			MEM_ADD1,			    MEM_ADD2,              
+		    MEM_HOMETEL,		MEM_COMTEL,			    MEM_HP,            
+		    MEM_MAIL,			MEM_JOB,			    MEM_LIKE,              
+		    MEM_MEMORIAL,		MEM_MEMORIALDAY,		MEM_MILEAGE
+		) VALUES (                                                                 
+			#{memId},		#{memPass},	  							  #{memName},                                  
+		    #{memRegno1},	#{memRegno2},						      TO_DATE(#{memBir}, 'YYYY-MM-DD'),          
+			#{memZip},	    #{memAdd1},							      #{memAdd2},                                 
+			#{memHometel},	#{memComtel},	 						  #{memHp},                                 
+			#{memMail},		#{memJob},	     						  #{memLike},                                 
+			#{memMemorial},	TO_DATE(#{memMemorialday}, 'YYYY-MM-DD'), 1000       
+		)		                                                                       
+	</insert>
+	<select id="selectMember" parameterType="MemberVO">
+		SELECT                                                                        
+		    MEM_ID,			    MEM_PASS,			    MEM_NAME,                  
+		    MEM_REGNO1,			MEM_REGNO2,			    MEM_BIR,               
+		    MEM_ZIP,			MEM_ADD1,			    MEM_ADD2,              
+		    MEM_HOMETEL,		MEM_COMTEL,			    MEM_HP,            
+		    MEM_MAIL,			MEM_JOB,			    MEM_LIKE,              
+		    MEM_MEMORIAL,		MEM_MEMORIALDAY,		MEM_MILEAGE
+		FROM MEMBER
+		WHERE MEM_ID = #{memId}                                      
+	</select>
+</mapper>
