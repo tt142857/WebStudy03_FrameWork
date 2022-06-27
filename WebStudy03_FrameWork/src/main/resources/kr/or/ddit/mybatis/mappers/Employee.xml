@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.ddit.dao.EmployeeDAO">
+<mapper namespace="kr.or.ddit.employee.dao.EmployeeDAO">
 	<select id="selectEmployeeList" parameterType="int" resultType="EmployeeVO">
 	SELECT                                                                    
 	    EMPLOYEE_ID,    FIRST_NAME,    	 LAST_NAME,                             
@@ -14,12 +14,12 @@
  	    WHERE A.EMPLOYEE_ID = B.MANAGER_ID                         
  	  ) CHILDCOUNT                         
 	FROM HR.EMPLOYEES A
-	<if test="managerId != null">
+	WHERE 1 = 1
+	<if test="managerId == null">
+		AND MANAGER_ID IS NULL
 	</if>
-	
-	if(managerId==null)
-			sql.append(" WHERE MANAGER_ID IS NULL ");
-		else
-			sql.append(" WHERE MANAGER_ID = ? ");
+	<if test="managerId != null">
+		AND MANAGER_ID = #{managerId}
+	</if>
 </select>
 </mapper>

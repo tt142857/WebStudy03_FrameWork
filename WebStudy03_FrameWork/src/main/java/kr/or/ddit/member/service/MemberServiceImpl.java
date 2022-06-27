@@ -37,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO retrieveMember(String memId) {
 		MemberVO member = memberDao.selectMember(memId);
 		if(member == null) {
-			throw new PKNotFoundException(String.format("%s 아이디를 가진 회원이 없음", member.getMemId()));
+			throw new PKNotFoundException(String.format("%s 아이디를 가진 회원이 없음", memId));
 		}
 		return member;
 	}

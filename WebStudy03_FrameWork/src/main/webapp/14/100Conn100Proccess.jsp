@@ -1,3 +1,4 @@
+<%@page import="org.apache.ibatis.session.SqlSession"%>
 <%@page import="kr.or.ddit.mybatis.CustomSqlSessionFactoryBuilder"%>
 <%@page import="org.apache.ibatis.session.SqlSessionFactory"%>
 <%@page import="java.sql.ResultSet"%>
@@ -17,17 +18,17 @@
 	SqlSessionFactory sqlSessionFactory = CustomSqlSessionFactoryBuilder.getSqlSessionFactory();
 	
 	long start = System.currentTimeMillis();
-	String sql = "SELECT * FROM MEMBER WHERE MEM_ID = 'a001'";
-	for (int i = 1; i <= 100; i++) {
-		try (
-				sqlSession 
-		) {
-			ResultSet rs = stmt.executeQuery(sql);
-			if (rs.next()) {
-				out.println(rs.getString("MEM_NAME"));
-			}
+	
+	try (
+		SqlSession sqlSession = sqlSessionFactory.openSession(); 
+	) {
+		String sql = "SELECT * FROM MEMBER WHERE MEM_ID = 'a001'";
+		sqlSession.selectOne(sql);
+		for (int i = 1; i <= 100; i++) {		
+			out.println(rs.getString("MEM_NAME"));
 		}
 	}
+	
 	long end = System.currentTimeMillis();
 %>
 	소요시간 :
