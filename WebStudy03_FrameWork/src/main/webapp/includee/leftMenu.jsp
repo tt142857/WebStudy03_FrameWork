@@ -10,6 +10,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="<%=request.getContextPath() %>/myPage.do">
+              <span data-feather="file"></span>
+              		마이페이지
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="<%=request.getContextPath() %>/member/memberList.do">
               <span data-feather="file"></span>
               		회원관리

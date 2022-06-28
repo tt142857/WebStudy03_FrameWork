@@ -6,13 +6,53 @@
 		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_HP, MEM_ADD1
 		FROM MEMBER
 		WHERE MEM_ID = #{memId}
+		AND MEM_DELETE IS NULL
 	</select>
 	<select id="selectMemberList" resultType="MemberVO">
 		SELECT MEM_ID, MEM_NAME, MEM_HP,
 			   MEM_ADD1, MEM_MAIL, MEM_MILEAGE
 		FROM MEMBER
+		WHERE MEM_DELETE IS NULL
 	</select>
+
+	<resultMap type="MemberVO" id="memberMap" autoMapping="true">
+		<id property="memId" column="MEM_ID" />
+		<collection property="buyList" javaType="java.util.HashSet" ofType="ProdVO" autoMapping="true">
+			<association property="buyer" javaType="BuyerVO" autoMapping="true">
+				<result property="buyerName" column="BUYER_NAME" />
+			</association>
+		</collection>
+	</resultMap>
+	<select id="selectMember" parameterType="string" resultMap="memberMap">
+		WITH PRODVIEW AS (
+     		 SELECT PROD.*, BUYER_NAME, LPROD_NM
+  		     FROM PROD INNER JOIN BUYER ON(PROD_BUYER = BUYER_ID)
+          			   INNER JOIN LPROD ON(PROD_LGU = LPROD_GU)
+      	), CARTVIEW AS(
+        	 SELECT DISTINCT CART_MEMBER, CART_PROD
+       		 FROM CART
+      	), CARTPROD AS(
+        	 SELECT CARTVIEW.*,PRODVIEW.*
+          	 FROM CARTVIEW INNER JOIN PRODVIEW ON(CART_PROD= PROD_ID)
+      	)
+      	SELECT 
+        	 MEM_ID,          MEM_PASS,             MEM_NAME,                  
+          	 MEM_REGNO1,      MEM_REGNO2,           MEM_BIR,               
+          	 MEM_ZIP,         MEM_ADD1,             MEM_ADD2,              
+          	 MEM_HOMETEL,     MEM_COMTEL,           MEM_HP,            
+          	 MEM_MAIL,        MEM_JOB,              MEM_LIKE,              
+          	 MEM_MEMORIAL,    MEM_MEMORIALDAY,      MEM_MILEAGE,        MEM_DELETE,
+          	 PROD_ID,		  PROD_NAME, 			PROD_COST, 			PROD_PRICE,
+          	 BUYER_NAME, 	  LPROD_NM
+      	FROM MEMBER LEFT OUTER JOIN CARTPROD ON (MEM_ID = CART_MEMBER)
+      	WHERE MEM_ID = #{memId}                                  
+	</select>
+	
 	<insert id="insertMember" parameterType="MemberVO">
+		<!-- PK를 클라이언트가 생성하는 것이 아니라 직접 생성해줘야할 때 씀 -->
+		<!-- <selectKey></selectKey> -->
+		
+		<!-- jdbcType=데이터타입 : 부적절한 열을 NULL처리해 줌 -->
 		INSERT INTO MEMBER (                                                          
 		    MEM_ID,			    MEM_PASS,			    MEM_NAME,                  
 		    MEM_REGNO1,			MEM_REGNO2,			    MEM_BIR,               
@@ -21,23 +61,37 @@
 		    MEM_MAIL,			MEM_JOB,			    MEM_LIKE,              
 		    MEM_MEMORIAL,		MEM_MEMORIALDAY,		MEM_MILEAGE
 		) VALUES (                                                                 
-			#{memId},		#{memPass},	  							  #{memName},                                  
-		    #{memRegno1},	#{memRegno2},						      TO_DATE(#{memBir}, 'YYYY-MM-DD'),          
-			#{memZip},	    #{memAdd1},							      #{memAdd2},                                 
-			#{memHometel},	#{memComtel},	 						  #{memHp},                                 
-			#{memMail},		#{memJob},	     						  #{memLike},                                 
-			#{memMemorial},	TO_DATE(#{memMemorialday}, 'YYYY-MM-DD'), 1000       
+			#{memId, jdbcType=VARCHAR},			#{memPass, jdbcType=VARCHAR},	  							#{memName, jdbcType=VARCHAR},                                  
+		    #{memRegno1, jdbcType=VARCHAR},		#{memRegno2, jdbcType=VARCHAR},						      	TO_DATE(#{memBir, jdbcType=DATE}, 'YYYY-MM-DD'),          
+			#{memZip, jdbcType=VARCHAR},	    #{memAdd1, jdbcType=VARCHAR},							    #{memAdd2, jdbcType=VARCHAR},                                 
+			#{memHometel, jdbcType=VARCHAR},	#{memComtel, jdbcType=VARCHAR},	 						  	#{memHp, jdbcType=VARCHAR},                                 
+			#{memMail, jdbcType=VARCHAR},		#{memJob, jdbcType=VARCHAR},	     						#{memLike, jdbcType=VARCHAR},                                 
+			#{memMemorial, jdbcType=VARCHAR},	TO_DATE(#{memMemorialday, jdbcType=DATE}, 'YYYY-MM-DD'), 	1000       
 		)		                                                                       
 	</insert>
-	<select id="selectMember" parameterType="MemberVO">
-		SELECT                                                                        
-		    MEM_ID,			    MEM_PASS,			    MEM_NAME,                  
-		    MEM_REGNO1,			MEM_REGNO2,			    MEM_BIR,               
-		    MEM_ZIP,			MEM_ADD1,			    MEM_ADD2,              
-		    MEM_HOMETEL,		MEM_COMTEL,			    MEM_HP,            
-		    MEM_MAIL,			MEM_JOB,			    MEM_LIKE,              
-		    MEM_MEMORIAL,		MEM_MEMORIALDAY,		MEM_MILEAGE
-		FROM MEMBER
-		WHERE MEM_ID = #{memId}                                      
-	</select>
+	
+	<update id="updateMember" parameterType="MemberVO">
+		UPDATE MEMBER
+		SET
+			MEM_NAME = #{memName, jdbcType=VARCHAR},
+			MEM_ZIP = #{memZip, jdbcType=VARCHAR},
+			MEM_ADD1 = #{memAdd1, jdbcType=VARCHAR},
+			MEM_ADD2 = #{memAdd2, jdbcType=VARCHAR},
+			MEM_HOMETEL = #{memHometel, jdbcType=VARCHAR},
+			MEM_COMTEL = #{memComtel, jdbcType=VARCHAR},
+			MEM_HP = #{memHp, jdbcType=VARCHAR},
+			MEM_MAIL = #{memMail, jdbcType=VARCHAR},
+			MEM_JOB = #{memJob, jdbcType=VARCHAR},
+			MEM_LIKE = #{memLike, jdbcType=VARCHAR},
+			MEM_MEMORIAL = #{memMemorial, jdbcType=VARCHAR},
+			MEM_MEMORIALDAY = #{memMemorialday, jdbcType=DATE}
+		WHERE MEM_ID = #{memId, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteMember" parameterType="string">
+		UPDATE MEMBER
+		SET MEM_DELETE = 'Y'
+		WHERE MEM_ID = #{memId, jdbcType=VARCHAR}
+		AND MEM_PASS = ${memPass, jdbcType=VARCHAR}
+	</delete>
 </mapper>

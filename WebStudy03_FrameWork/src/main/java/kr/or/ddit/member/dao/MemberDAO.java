@@ -29,6 +29,17 @@ public interface MemberDAO {
 	 */
 	public MemberVO selectMember(String memId);
 	
-//	updateMember
-//	deleteMember
+	/**
+	 * 회원 정보 수정
+	 * @param member 수정할 회원의 정보를 가진 VO
+	 * @return 수정한 레코드 수 if > 0 : 성공, else : 실패
+	 */
+	public int updateMember(MemberVO member);
+	
+	/**
+	 * 회원 정보 삭제
+	 * @param memId 삭제할 회원의 아이디
+	 * @return 삭제한 레코드 수 if > 0 : 성공, else : 실패
+	 */
+	public int deleteMember(String memId);
 }

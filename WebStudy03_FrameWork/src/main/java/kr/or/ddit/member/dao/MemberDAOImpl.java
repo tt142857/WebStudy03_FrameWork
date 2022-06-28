@@ -26,7 +26,6 @@ public class MemberDAOImpl implements MemberDAO {
 			// Proxy가 만들어지려면 Interface가 꼭 필요
 			// 단점: 너무 많은 Proxy를 만들어야 함
 		}
-		
 	}
 	
 	@Override
@@ -45,17 +44,45 @@ public class MemberDAOImpl implements MemberDAO {
 		try (
 			SqlSession sqlSession = SqlSessionFactory.openSession();
 		) {
-			return sqlSession.insert("inserMember", member);
+			//return sqlSession.insert("inserMember", member);
+			MemberDAO mapperProxy = sqlSession.getMapper(MemberDAO.class);
+			int rowcnt = mapperProxy.insertMember(member);
+			//sqlSession.commit(); - 안쓰면 커밋이 안됨
+			//sqlSession.rollback();
+			return rowcnt;
 		}
 	}
 	
 	@Override
 	public MemberVO selectMember(String memId) {
-		
 		try (
 			SqlSession sqlSession = SqlSessionFactory.openSession();
 		) {
 			return sqlSession.selectOne("selectMember", memId);
+		} 
+	}
+	
+	@Override
+	public int updateMember(MemberVO member) {
+		try (
+			SqlSession sqlSession = SqlSessionFactory.openSession();
+		) {
+			MemberDAO mapperProxy = sqlSession.getMapper(MemberDAO.class);
+			int rowcnt = mapperProxy.updateMember(member);
+			sqlSession.commit();
+			return rowcnt;
+		} 
+	}
+	
+	@Override
+	public int deleteMember(String memId) {
+		try (
+			SqlSession sqlSession = SqlSessionFactory.openSession();
+		) {
+			MemberDAO mapperProxy = sqlSession.getMapper(MemberDAO.class);
+			int rowcnt = mapperProxy.deleteMember(memId);
+			sqlSession.commit();
+			return rowcnt;
 		} 
 	}
 }

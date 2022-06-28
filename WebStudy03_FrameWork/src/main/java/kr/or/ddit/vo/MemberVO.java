@@ -1,12 +1,35 @@
 package kr.or.ddit.vo;
 
 import java.io.Serializable;
+import java.util.Set;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 //DTO, marker interface : Serializable - marker annotation
 /**
  * 회원 관리를 위한 Domain Layer
- *
+ * 한 사람의 회원에 대한 모든 정보를 가진 객체
+ * 기본정보 + 구매기록(상품들)
+ * 
+ * Mybatis를 이용한 조인 방법
+ * 1. 테이블 간의 관계성을 메인 테이블을 중심으로 파악
+ *   ex) 한 명의 회원과 그 사람의 구매 기록 조회
+ *     MEMBER(1) PROD(N) -> 1:N
+ *     PROD(1) BUYER(1) -> 1:1
+ * 2. 각 테이블의 스키마를 반영한 VO 생성
+ *   MEMBER(MemberVO), PROD(ProdVO), BUYER(BuyerVO)
+ * 3. 테이블 간의 관계성을 VO에 반영
+ *   1:1 -> ProdVO has a BuyerVO 
+ *   1:N -> MemberVO has many ProdVO
+ * 4. 조인 쿼리 작성 -> resultType 대신 resultMap을 사용해 바인딩
+ *   1:1 -> has a -> association으로 바인딩
+ *   1:N -> has many -> collection으로 바인딩 -> id로 중복여부 판단 설정        
  */
+@Data
+@EqualsAndHashCode(of= {"memId", "memRegno1", "memRegno2"})
+@ToString(exclude= {"memPass", "memRegno1", "memRegno2", "buyList"})
 public class MemberVO implements Serializable {
 	private String memId;
 	private transient String memPass;
@@ -27,181 +50,7 @@ public class MemberVO implements Serializable {
 	private String memMemorialday;
 	private Integer memMileage;
 	private String memDelete;
-	public String getMemId() {
-		return memId;
-	}
-	public void setMemId(String memId) {
-		this.memId = memId;
-	}
-	public String getMemPass() {
-		return memPass;
-	}
-	public void setMemPass(String memPass) {
-		this.memPass = memPass;
-	}
-	public String getMemName() {
-		return memName;
-	}
-	public void setMemName(String memName) {
-		this.memName = memName;
-	}
-	public String getMemRegno1() {
-		return memRegno1;
-	}
-	public void setMemRegno1(String memRegno1) {
-		this.memRegno1 = memRegno1;
-	}
-	public String getMemRegno2() {
-		return memRegno2;
-	}
-	public void setMemRegno2(String memRegno2) {
-		this.memRegno2 = memRegno2;
-	}
-	public String getMemBir() {
-		return memBir;
-	}
-	public void setMemBir(String memBir) {
-		this.memBir = memBir;
-	}
-	public String getMemZip() {
-		return memZip;
-	}
-	public void setMemZip(String memZip) {
-		this.memZip = memZip;
-	}
-	public String getMemAdd1() {
-		return memAdd1;
-	}
-	public void setMemAdd1(String memAdd1) {
-		this.memAdd1 = memAdd1;
-	}
-	public String getMemAdd2() {
-		return memAdd2;
-	}
-	public void setMemAdd2(String memAdd2) {
-		this.memAdd2 = memAdd2;
-	}
-	public String getMemHometel() {
-		return memHometel;
-	}
-	public void setMemHometel(String memHometel) {
-		this.memHometel = memHometel;
-	}
-	public String getMemComtel() {
-		return memComtel;
-	}
-	public void setMemComtel(String memComtel) {
-		this.memComtel = memComtel;
-	}
-	public String getMemHp() {
-		return memHp;
-	}
-	public void setMemHp(String memHp) {
-		this.memHp = memHp;
-	}
-	public String getMemMail() {
-		return memMail;
-	}
-	public void setMemMail(String memMail) {
-		this.memMail = memMail;
-	}
-	public String getMemJob() {
-		return memJob;
-	}
-	public void setMemJob(String memJob) {
-		this.memJob = memJob;
-	}
-	public String getMemLike() {
-		return memLike;
-	}
-	public void setMemLike(String memLike) {
-		this.memLike = memLike;
-	}
-	public String getMemMemorial() {
-		return memMemorial;
-	}
-	public void setMemMemorial(String memMemorial) {
-		this.memMemorial = memMemorial;
-	}
-	public String getMemMemorialday() {
-		return memMemorialday;
-	}
-	public void setMemMemorialday(String memMemorialday) {
-		this.memMemorialday = memMemorialday;
-	}
-	public Integer getMemMileage() {
-		return memMileage;
-	}
-	public void setMemMileage(Integer memMileage) {
-		this.memMileage = memMileage;
-	}
-	public String getMemDelete() {
-		return memDelete;
-	}
-	public void setMemDelete(String memDelete) {
-		this.memDelete = memDelete;
-	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((memId == null) ? 0 : memId.hashCode());
-		result = prime * result + ((memRegno1 == null) ? 0 : memRegno1.hashCode());
-		result = prime * result + ((memRegno2 == null) ? 0 : memRegno2.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MemberVO other = (MemberVO) obj;
-		if (memId == null) {
-			if (other.memId != null)
-				return false;
-		} else if (!memId.equals(other.memId))
-			return false;
-		if (memRegno1 == null) {
-			if (other.memRegno1 != null)
-				return false;
-		} else if (!memRegno1.equals(other.memRegno1))
-			return false;
-		if (memRegno2 == null) {
-			if (other.memRegno2 != null)
-				return false;
-		} else if (!memRegno2.equals(other.memRegno2))
-			return false;
-		return true;
-	}
-	@Override
-	public String toString() {
-		return "MemberVO [memId=" + memId + ", memName=" + memName + ", memBir=" + memBir + ", memZip=" + memZip
-				+ ", memAdd1=" + memAdd1 + ", memAdd2=" + memAdd2 + ", memHometel=" + memHometel + ", memComtel="
-				+ memComtel + ", memHp=" + memHp + ", memMail=" + memMail + ", memJob=" + memJob + ", memLike="
-				+ memLike + ", memMemorial=" + memMemorial + ", memMemorialday=" + memMemorialday + ", memMileage="
-				+ memMileage + ", memDelete=" + memDelete + "]";
-	}
-	
-	public String getMemTest() {
-		return "TEST";
-	}
+
+	//구매기록, 중복허용 X
+	private Set<ProdVO> buyList; // has many
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

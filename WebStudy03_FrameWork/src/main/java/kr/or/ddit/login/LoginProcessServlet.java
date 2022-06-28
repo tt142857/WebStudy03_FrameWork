@@ -22,9 +22,7 @@ public class LoginProcessServlet extends HttpServlet{
 	AuthenticateService service=new AuthenticateServiceImpl();
 	
 	private boolean validate(MemberVO member) {
-		return StringUtils.isNotBlank(member.getMemId()) 
-				&& 
-			   StringUtils.isNotBlank(member.getMemPass());
+		return StringUtils.isNotBlank(member.getMemId()) && StringUtils.isNotBlank(member.getMemPass());
 	}
 	
 	@Override

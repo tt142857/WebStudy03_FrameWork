@@ -82,6 +82,14 @@
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.9.3</version>
 		</dependency>
+		<!-- JavaBean 지원용 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.24</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<!-- Marshalling 지원용 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>

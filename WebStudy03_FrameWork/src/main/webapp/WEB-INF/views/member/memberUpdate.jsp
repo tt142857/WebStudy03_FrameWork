@@ -12,14 +12,13 @@
 		alert("${message }");
 	</script>
 </c:if>
-	<h4>회원 가입 양식</h4>
+	<h4>회원 수정 양식</h4>
 	<form method="post" enctype="application/x-www-form-urlencoded">
 		<table>
 			<tr>
 				<th>회원아이디</th>
 				<td>
-				<input type="text" name="memId"  value="${member.memId }" />
-					<span class="error">${errors['memId'] }</span>
+					<input type="hidden" name="memId"  value="${member.memId }" />
 				</td>
 			</tr>
 			<tr>
@@ -30,67 +29,63 @@
 			</tr>
 			<tr>
 				<th>회원명</th>
-				<td><input type="text" name="memName" value="${member.memName }" /></td>
+				<td><input type="text" name="memName"  /></td>
 			</tr>
 			<tr>
 				<th>주민번호1</th>
-				<td><input type="text" name="memRegno1" value="${member.memRegno1 }" /></td>
+				<td><input type="text" name="memRegno1" /></td>
 			</tr>
 			<tr>
 				<th>주민번호2</th>
-				<td><input type="text" name="memRegno2" value="${member.memRegno2 }" /></td>
+				<td><input type="text" name="memRegno2" /></td>
 			</tr>
 			<tr>
 				<th>생일</th>
-				<td><input type="date" name="memBir" value="${member.memBir }" /></td>
+				<td><input type="date" name="memBir"  /></td>
 			</tr>
 			<tr>
 				<th>우편번호</th>
-				<td><input type="text" name="memZip" value="${member.memZip }" /></td>
+				<td><input type="text" name="memZip"  /></td>
 			</tr>
 			<tr>
 				<th>주소1</th>
-				<td><input type="text" name="memAdd1" value="${member.memAdd1 }" /></td>
+				<td><input type="text" name="memAdd1"  /></td>
 			</tr>
 			<tr>
 				<th>주소2</th>
-				<td><input type="text" name="memAdd2" value="${member.memAdd2 }" /></td>
+				<td><input type="text" name="memAdd2"  /></td>
 			</tr>
 			<tr>
 				<th>집전화번호</th>
-				<td><input type="text" name="memHometel" value="${member.memHometel }" /></td>
+				<td><input type="text" name="memHometel" /></td>
 			</tr>
 			<tr>
 				<th>회사번호</th>
-				<td><input type="text" name="memComtel" value="${member.memComtel }" /></td>
+				<td><input type="text" name="memComtel" /></td>
 			</tr>
 			<tr>
 				<th>휴대폰</th>
-				<td><input type="text" name="memHp" value="${member.memHp }" /></td>
+				<td><input type="text" name="memHp"  /></td>
 			</tr>
 			<tr>
 				<th>이메일</th>
-				<td><input type="text" name="memMail" value="${member.memMail }" /></td>
+				<td><input type="text" name="memMail"  /></td>
 			</tr>
 			<tr>
 				<th>직업</th>
-				<td><input type="text" name="memJob" value="${member.memJob }" /></td>
+				<td><input type="text" name="memJob" /></td>
 			</tr>
 			<tr>
 				<th>취미</th>
-				<td><input type="text" name="memLike" value="${member.memLike }" /></td>
+				<td><input type="text" name="memLike" /></td>
 			</tr>
 			<tr>
 				<th>기념일</th>
-				<td><input type="text" name="memMemorial" value="${member.memMemorial }" /></td>
+				<td><input type="text" name="memMemorial" /></td>
 			</tr>
 			<tr>
 				<th>기념일자</th>
-				<td><input type="date" name="memMemorialday" value="${member.memMemorialday }" /></td>
-			</tr>
-			<tr>
-				<th>마일리지</th>
-				<td><input type="number" name="memMileage" value="${member.memMileage }" /></td>
+				<td><input type="date" name="memMemorialday" /></td>
 			</tr>
 			<tr>
 				<td colspan="2">

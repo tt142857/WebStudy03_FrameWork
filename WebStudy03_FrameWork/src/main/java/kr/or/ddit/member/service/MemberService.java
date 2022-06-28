@@ -26,6 +26,18 @@ public interface MemberService {
 	 * @return 존재하지 않는 경우, {@link PKNotFoundException} 발생
 	 */
 	public MemberVO retrieveMember(String memId);
-//	modifyMember
-//	removeMember
+	
+	/**
+	 * 회원 정보 수정
+	 * @param member
+	 * @return {@link PKNotFoundException}, INVALIDPASSWORD, OK, FAIL}
+	 */
+	public ServiceResult modifyMember(MemberVO member);
+	
+	/**
+	 * 회원 탈퇴
+	 * @param member 탈퇴할 회원의 아이디와 비밀번호
+	 * @return {@link PKNotFoundException}, INVALIDPASSWORD, OK, FAIL}
+	 */
+	public ServiceResult removeMember(MemberVO member);
 }
