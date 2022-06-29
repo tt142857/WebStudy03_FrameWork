@@ -15,25 +15,12 @@ public class LogoutServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession(false);
-		if(session==null || session.isNew()) {
+		if (session == null || session.isNew()) {
 			resp.sendError(400);
 			return;
 		}
 		session.invalidate();
-		String message = URLEncoder.encode("로그 아웃", "UTF-8");
+		String message = URLEncoder.encode("로그아웃", "UTF-8");
 		resp.sendRedirect(String.format("%s%s%s", req.getContextPath(), "/?message=", message));
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

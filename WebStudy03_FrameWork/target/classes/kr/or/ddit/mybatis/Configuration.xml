@@ -8,6 +8,7 @@
    <typeAliases>
       <package name="kr.or.ddit.vo"/>
       <package name="kr.or.ddit.member.dao."/>
+      <package name="kr.or.ddit.prod.dao."/>
    </typeAliases>
    <environments default="dev">
       <environment id="dev">
@@ -28,6 +29,7 @@
       <mapper resource="kr/or/ddit/mybatis/mappers/Member.xml"/>
       <mapper resource="kr/or/ddit/mybatis/mappers/Employee.xml"/>
       <mapper resource="kr/or/ddit/mybatis/mappers/DBProps.xml"/>
+      <mapper resource="kr/or/ddit/mybatis/mappers/Prod.xml"/>
    </mappers>
 
 </configuration>

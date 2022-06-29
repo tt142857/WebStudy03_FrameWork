@@ -38,31 +38,23 @@ public class DelegatingViewResolver implements ViewResolver{
 	}
 	
 	@Override
-	public void viewResolve(String viewName, HttpServletRequest request, HttpServletResponse response)
+	public void viewResolve(String viewName, HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		if(viewName.startsWith("redirect:")) {
 			viewName = viewName.substring("redirect:".length());
-			response.sendRedirect(request.getContextPath() + viewName);
+			resp.sendRedirect(req.getContextPath() + viewName);
+		} else if(viewName.startsWith("forward:")) {
+			// forward:/login/logout.do
+			viewName = viewName.substring("forward:".length());
+			req.getRequestDispatcher(viewName).forward(req, resp);
 		}else {
 			// forward 에서 사용.
 			ViewResolver finded = findViewResolver(viewName);
-			finded.viewResolve(viewName, request, response);
+			finded.viewResolve(viewName, req, resp);
 		}
 		
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -23,6 +23,7 @@ public class MemberViewServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String memId = req.getParameter("who");
+		String layout = req.getParameter("layout");
 		
 		if(StringUtils.isBlank(memId)) { // 필수파라미터(클라이언트) X => 400 에러
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "필수파라미터 누락");
@@ -32,9 +33,12 @@ public class MemberViewServlet extends HttpServlet {
 		MemberVO member = service.retrieveMember(memId);
 		req.setAttribute("member", member);
 		
-		String viewName = "member/memberView";
+		String viewName = null;
+		if("grid".equals(layout)) {
+			viewName = "member/memberView.tiles";
+		} else {
+			viewName = "member/memberView";
+		}
 		new DelegatingViewResolver().viewResolve(viewName, req, resp);
 	}
-	
-	
 }

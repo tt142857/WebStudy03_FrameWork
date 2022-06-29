@@ -27,4 +27,7 @@
   <definition name="index" extends="parent">
   	<put-attribute name="body" value="/WEB-INF/views/index.jsp" />
   </definition>
+  <definition name="prod/*" extends="prod">
+  	<put-attribute name="body" value="/WEB-INF/views/prod/{1}.jsp" /> <!-- {1} = prod/뒤에 오는 텍스트 -->
+  </definition>
 </tiles-definitions>

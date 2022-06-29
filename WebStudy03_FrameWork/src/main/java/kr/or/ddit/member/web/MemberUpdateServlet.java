@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
@@ -30,11 +31,16 @@ public class MemberUpdateServlet extends HttpServlet {
 		// 이 세션이 정상인지, 로그인 아이디가 정상인지 확인해야 함
 		MemberVO authMember = (MemberVO) req.getSession().getAttribute("authMember");
 	
-		String memId = authMember.getMemId();
-		MemberVO member = service.retrieveMember(memId);
-		req.setAttribute("member", member);
-		
-		String viewName = "/member/memberForm.tiles";
+		String viewName = null;
+		if(ObjectUtils.isEmpty(authMember)) {
+			viewName = "/index.tiles";
+		}
+		else {
+			String memId = authMember.getMemId();
+			MemberVO member = service.retrieveMember(memId);
+			req.setAttribute("member", member);
+			viewName = "/member/memberForm.tiles";
+		}
 		new DelegatingViewResolver().viewResolve(viewName, req, resp);
 	}
 	

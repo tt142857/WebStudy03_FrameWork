@@ -93,7 +93,7 @@
 		   <tr>
 		      	<td colspan="2">
 		        	<input type="button" class="btn btn-primary" value="수정">
-		        	<input type="button" class="btn btn-danger" value="탈퇴">
+		        	<input type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" value="탈퇴">
 				</td>
 			</tr>
 			<tr>
@@ -114,7 +114,12 @@
 							<c:if test="${not empty buyList }">
 								<c:forEach items="${buyList }" var="prod">
 									<tr>
-										<td>${prod.prodName }</td>
+										<td>
+											<c:url value="/prod/prodView.do" var="prodViewURL">
+												<c:param name="what" value="${prod.prodId }" />
+											</c:url>
+											<a href="${prodViewURL }">${prod.prodName }</a>
+										</td>
 										<td>${prod.lprodNm }</td>
 										<td>${prod.buyer.buyerName }</td>
 										<td>${prod.prodCost }</td>
@@ -136,8 +141,41 @@
 </body>
 </html>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+		<form id="delete-member-form" action="${cPath}/member/memberDelete.do" method="post">
+			<input type="password" name="password" class="form-control" placeholder="비밀번호 입력"/>
+		</form>
+	  </div>
+      <div class="modal-footer">
+      	<button id="resign-btn" type="button" class="btn btn-primary">탈퇴</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-	$("input").on("click", function() {
-		location.href = "${cPath}/member/memberUpdate.do";
+	$("input").on("click", function(event) {
+		if(this.value == "수정") {
+			location.href = "${cPath}/member/memberUpdate.do";
+		}
+	});
+	
+	$("#resign-btn").on("click", function(event) {
+		$("#delete-member-form").submit();
+	});
+	
+	$("#exampleModal").on("hidden.bs.modal", function(event) {
+		$(this).find("form").get(0).reset();
+		//console.log($(this).find("form"));
 	});
 </script>
+

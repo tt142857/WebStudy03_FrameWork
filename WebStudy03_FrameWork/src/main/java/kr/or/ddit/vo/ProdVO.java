@@ -1,6 +1,7 @@
 package kr.or.ddit.vo;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,4 +38,6 @@ public class ProdVO implements Serializable {
 	private BuyerVO buyer;
 	
 	private String lprodNm;
+	
+	private Set<MemberVO> memberSet;
 }

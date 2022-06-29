@@ -3,8 +3,12 @@ package kr.or.ddit.vo;
 import java.io.Serializable;
 import java.util.Set;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 //DTO, marker interface : Serializable - marker annotation
@@ -30,7 +34,11 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(of= {"memId", "memRegno1", "memRegno2"})
 @ToString(exclude= {"memPass", "memRegno1", "memRegno2", "buyList"})
+@NoArgsConstructor // 기본 생성자 생성
+@AllArgsConstructor(access=AccessLevel.PRIVATE)
+@Builder
 public class MemberVO implements Serializable {
+
 	private String memId;
 	private transient String memPass;
 	private String memName;

@@ -92,6 +92,5 @@
 		UPDATE MEMBER
 		SET MEM_DELETE = 'Y'
 		WHERE MEM_ID = #{memId, jdbcType=VARCHAR}
-		AND MEM_PASS = ${memPass, jdbcType=VARCHAR}
 	</delete>
 </mapper>

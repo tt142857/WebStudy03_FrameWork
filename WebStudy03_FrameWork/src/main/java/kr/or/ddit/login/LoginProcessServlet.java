@@ -19,7 +19,7 @@ import kr.or.ddit.vo.MemberVO;
 @WebServlet("/login/loginProcess.do")
 public class LoginProcessServlet extends HttpServlet{
 	
-	AuthenticateService service=new AuthenticateServiceImpl();
+	AuthenticateService service = new AuthenticateServiceImpl();
 	
 	private boolean validate(MemberVO member) {
 		return StringUtils.isNotBlank(member.getMemId()) && StringUtils.isNotBlank(member.getMemPass());
