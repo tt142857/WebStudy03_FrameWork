@@ -9,6 +9,7 @@
 <table class="table table-bordered">
 	<thead>
 		<tr>
+			<th>No.</th>
 			<th>회원아이디</th>
 			<th>회원명</th>
 			<th>휴대폰</th>
@@ -17,35 +18,34 @@
 			<th>마일리지</th>
 		</tr>
 	</thead>
-	<tbody>
-	<c:choose>
-		<c:when test="${empty memberList }">
-			<tr>
-				<td colspan='6'>회원이 아직 없음</td>
-			</tr>
-		</c:when>
-		<c:otherwise>
-			<c:forEach items="${memberList }" var="member">
-				<tr>
-					<td>${member.memId }</td>
-					<!-- var는 속성명으로 주어지기 때문에 EL로 불러옴 -->
-					<c:url value="/member/memberView.do" var="viewURL">
-						<c:param name="who" value="${member.memId }" />
-					</c:url>
-					<td><a href="${viewURL }" data-bs-toggle="modal" data-bs-target="#exampleModal">${member.memName }</a></td>
-					<td>${member.memHp }</td>
-					<td>${member.memAdd1 }</td>
-					<td>${member.memMail }</td>
-					<td>
-						<fmt:setLocale value="<%=Locale.US %>" />
-						<fmt:formatNumber value="${member.memMileage }" type="currency" />
-					</td>
-				
-			</c:forEach>
-		</c:otherwise>
-	</c:choose>
+	<tbody id="listBody">
 	</tbody>
+	<tfoot>
+		<tr>
+			<tr>
+				<td colspan="7">
+				<div class="d-flex justify-content-center pagingArea">
+				</div>
+				<div id="searchUI" class="d-flex justify-content-center">
+					<select name="searchType">
+						<option value="">전체</option>
+						<option value="name">이름</option>
+						<option value="address">지역</option>
+					</select>
+					<input type="text" name="searchWord" />
+					<input id="searchBtn" type="button" value="검색" class="btn btn-success" />
+				</div>
+				</td>
+			</tr>
+		</tr>
+	</tfoot>
 </table>
+<form id="searchForm" action="${cPath }/member/memberList.do">
+	<input type="text" name="page" />
+	<input type="text" name="searchType" />
+	<input type="text" name="searchWord" />
+</form>
+
 
 <script type="text/javascript">
 	var showModal = function() {
@@ -95,5 +95,89 @@
 	});
 </script>
 
+<script>
+	$("[name='searchType']").val("${pagingVO.simpleCondition.searchType}");
+	$("[name='searchWord']").val("${pagingVO.simpleCondition.searchWord}");
+	
+	$(".pagingArea").on("click", "a", function(event) {
+		let page = $(this).data("page");
+		searchForm.find("[name=page]").val(page);
+		searchForm.submit();
+	});
+	
+	let listBody = $("#listBody");
+	let pagingArea = $(".pagingArea")
+	let searchUI = $("#searchUI");
+	<c:url value="/member/memberView.do" var="viewURL">
+		<c:param name="who" value="memId" />
+	</c:url>
+	const VIEWURL = "${viewURL}";
+	let makeSingleTr = function(index, member) {
+		let aTag = $("<a>").attr({
+						"href" : VIEWURL.replace("memId", member.memId),
+						"data-bs-toggle" : "modal",
+						"data-bs-target" : "#exampleModal"
+					}).text(member.memName);
+		return $("<tr>").append(
+					$("<td>").html(member.rnum),
+					$("<td>").html(member.memId),
+					$("<td>").html(aTag),
+					$("<td>").html(member.memHp),
+					$("<td>").html(member.memAdd1),
+					$("<td>").html(member.memMail),
+					$("<td>").html(member.memMileage)
+				);
+	}
+	
+	let searchForm = $("#searchForm").on("submit", function(event) {
+		event.preventDefault();
+		let url = this.action;
+		let method = this.method;
+		let data = $(this).serialize();
+		
+		$.ajax({
+			url : url,
+			method : method,
+			data : data,
+			dataType : "json", // text, html, json, xml, script -> main type : text, 파일 업로드 처리를 비동기로? (FormData)
+			success : function(resp, status, jqXHR) {
+				let pagingVO = resp.pagingVO;
+				let memberList = resp.pagingVO.dataList;
+				let trTags = [];
+				if(memberList && memberList.length > 0) {
+					$(memberList).each(function(index, member) {
+						trTags.push(makeSingleTr(index, member));
+					});
+				} else {
+					let trTag = $("<tr>").html(
+									$("<td>").attr("colspan", "6")	
+											 .html("회원이 아직 없음")
+								);
+					trTags.push(trTag);
+				}
+				listBody.html(trTags);
+				pagingArea.html(pagingVO.pagingHTMLBS);
+			},
+			error : function(jqXHR, status, error) {
+				console.log(jqXHR);
+				console.log(status);
+				console.log(error);
+			}
+		});
+		return false;
+	}).submit();
+	
+	$("#searchBtn").on("click", function(event) {
+		searchForm.get(0).reset();
+		let inputs = searchUI.find(":input[name]")
+		$(inputs).each(function(idx, input) {
+			let name = $(this).attr("name");
+			let value = $(this).val();
+			
+			searchForm.find("[name=" + name + "]").val(value);
+		});
+		searchForm.submit();
+	});
+</script>
 
 

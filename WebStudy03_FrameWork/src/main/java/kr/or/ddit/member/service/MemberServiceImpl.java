@@ -7,6 +7,7 @@ import kr.or.ddit.exception.PKNotFoundException;
 import kr.or.ddit.member.dao.MemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.PagingVO;
 
 public class MemberServiceImpl implements MemberService {
 	MemberDAO memberDao = new MemberDAOImpl();
@@ -29,8 +30,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberVO> retrieveMemberList() {
-		List<MemberVO> memberList = memberDao.selectMemberList();
+	public List<MemberVO> retrieveMemberList(PagingVO pagingVO) {
+		pagingVO.setTotalRecord(memberDao.selectTotalRecord(pagingVO));
+		List<MemberVO> memberList = memberDao.selectMemberList(pagingVO);
+		pagingVO.setDataList(memberList);
 		return memberList;
 	}
 

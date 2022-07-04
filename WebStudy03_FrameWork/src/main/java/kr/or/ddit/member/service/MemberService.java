@@ -5,6 +5,7 @@ import java.util.List;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.PKNotFoundException;
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.PagingVO;
 
 /**
  * 회원 관리(CRUD)를 위한 Business Logic Layer
@@ -18,7 +19,7 @@ public interface MemberService {
 	 */
 	public ServiceResult createMember(MemberVO member);
 	
-	public List<MemberVO> retrieveMemberList();
+	public List<MemberVO> retrieveMemberList(PagingVO pagingVO);
 	
 	/**
 	 * 회원 상세 조회

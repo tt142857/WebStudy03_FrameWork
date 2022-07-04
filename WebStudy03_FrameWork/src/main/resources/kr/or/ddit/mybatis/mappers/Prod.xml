@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.prod.dao.ProdDAO">
+
+	<!-- ${} : replace text(대체구문) : 하지만 이런 건 좋지 않음, SQL문은 동적으로 쓰면 공격에 당하기 취약하기 때문 -->
+	<!-- #{} : inline parameter -->
+	<sql id="sqlSearchFrag">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="detailCondition neq null">
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodLgu)">
+					AND PROD_LGU = #{detailCondition.prodLgu}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodBuyer)">
+					AND PROD_BUYER = #{detailCondition.prodBuyer}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodName)">
+					AND INSTR(PROD_NAME, #{detailCondition.prodName}) > 0
+				</if>
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="selectTotalRecord" resultType="int">
+		SELECT COUNT(*)
+		FROM PRODVIEW
+		<include refid="sqlSearchFrag"></include>
+	</select>
+	
+	<resultMap id="prodListMap" type="ProdVO" autoMapping="true">
+		<association property="buyer" javaType="BuyerVO" autoMapping="true" />
+	</resultMap>
+	<select id="selectProdList" parameterType="PagingVO" resultMap="prodListMap">
+		SELECT B.*
+		FROM (
+			SELECT ROWNUM RNUM, A.*
+			FROM (
+				SELECT
+				    PROD_ID,     PROD_NAME,                          	           LPROD_NM,
+				    BUYER_NAME,  TO_CHAR(PROD_INSDATE, 'YYYY-MM-DD') PROD_INSDATE, PROD_COST,
+				    PROD_PRICE,  PROD_MILEAGE
+				FROM PRODVIEW
+				<include refid="sqlSearchFrag" />
+				ORDER BY PROD_ID DESC   
+			) A
+		) B
+		
+		<!-- ?꺽새 문자는 이를 통해 사용해야 함 -->
+		<![CDATA[
+		WHERE RNUM >= #{startRow} AND RNUM <= #{endRow}
+		]]>
+	</select>
+
 	<resultMap id="prodMap" type="ProdVO" autoMapping="true">
 	 <id property="prodId" column="PROD_ID" />
 		<association property="buyer" javaType="BuyerVO" autoMapping="true" />
@@ -13,10 +62,6 @@
 		), CARTMEMBER AS (
 		    SELECT MEM_ID, MEM_NAME, MEM_HP, MEM_MAIL, CART_PROD
 		    FROM CARTVIEW INNER JOIN MEMBER ON (CART_MEMBER = MEM_ID)
-		), PRODVIEW AS (
-		    SELECT PROD.*, LPROD.*, BUYER.*
-		    FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
-		            INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
 		)
 		SELECT
 		    PROD_ID, PROD_NAME, PROD_LGU,

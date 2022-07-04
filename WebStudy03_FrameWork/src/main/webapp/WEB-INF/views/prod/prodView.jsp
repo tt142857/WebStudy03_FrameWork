@@ -1,16 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+
 ${prod }
 <c:set var="memberSet" value="${prod.memberSet }" />
 <c:if test="${empty memberSet }">
-
+	구매자 없음
 </c:if>
 <c:if test="${not empty memberSet }">
 	<c:forEach items="${memberSet }" var="user">
@@ -21,5 +16,6 @@ ${prod }
 		<a href="${memberViewURL }">${user.memName }</a>
 	</c:forEach>
 </c:if>
-</body>
-</html>
+
+
+<button>목록으로</button>

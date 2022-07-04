@@ -7,6 +7,7 @@ import kr.or.ddit.exception.PKNotFoundException;
 import kr.or.ddit.prod.dao.ProdDAO;
 import kr.or.ddit.prod.dao.ProdDAOImpl;
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 public class ProdServiceImpl implements ProdService {
@@ -14,14 +15,16 @@ public class ProdServiceImpl implements ProdService {
 	
 	@Override
 	public ServiceResult createProd(ProdVO prod) {
-		
 		return null;
 	}
 
+	
 	@Override
-	public List<ProdVO> retrieveProdList() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProdVO> retrieveProdList(PagingVO pagingVO) {
+		pagingVO.setTotalRecord(prodDAO.selectTotalRecord(pagingVO));
+		List<ProdVO> prodList = prodDAO.selectProdList(pagingVO);
+		pagingVO.setDataList(prodList);
+		return prodList;
 	}
 
 	@Override

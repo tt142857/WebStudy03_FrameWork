@@ -2,19 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- Interface 기반으로 만들어짐 -->
 <mapper namespace="kr.or.ddit.member.dao.MemberDAO">
+
+	<sql id="sqlSearchFrag">
+		<trim prefix="AND"> <!-- AND 쓰기 생략하는 법 -->
+			<if test="simpleCondition neq null and @org.apache.commons.lang3.StringUtils@isNotBlank(simpleCondition.searchWord)">
+				<choose>
+					<when test="simpleCondition.searchType eq 'name'">
+						INSTR(MEM_NAME, #{simpleCondition.searchWord}) > 0
+					</when>
+					<when test="simpleCondition.searchType eq 'address'">
+						INSTR(MEM_ADD1, #{simpleCondition.searchWord}) > 0
+					</when>
+					<otherwise>
+						(
+							INSTR(MEM_NAME, #{simpleCondition.searchWord}) > 0
+							OR
+							INSTR(MEM_ADD1, #{simpleCondition.searchWord}) > 0
+						)
+					</otherwise>
+				</choose>
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="selectTotalRecord" parameterType="pagingVO" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE MEM_DELETE IS NULL
+		<include refid="sqlSearchFrag" />
+	</select>
+	
 	<select id="selectMemberForAuth" parameterType="MemberVO" resultType="MemberVO">
 		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_HP, MEM_ADD1
 		FROM MEMBER
 		WHERE MEM_ID = #{memId}
 		AND MEM_DELETE IS NULL
 	</select>
-	<select id="selectMemberList" resultType="MemberVO">
-		SELECT MEM_ID, MEM_NAME, MEM_HP,
-			   MEM_ADD1, MEM_MAIL, MEM_MILEAGE
-		FROM MEMBER
-		WHERE MEM_DELETE IS NULL
+	
+	<select id="selectMemberList" parameterType="PagingVO" resultType="MemberVO">
+		SELECT B.*
+		FROM (
+				SELECT ROWNUM RNUM, A.*
+				FROM (
+					SELECT MEM_ID, MEM_NAME, MEM_HP,
+						   MEM_ADD1, MEM_MAIL, MEM_MILEAGE
+					FROM MEMBER
+					WHERE MEM_DELETE IS NULL
+					<include refid="sqlSearchFrag" />
+					ORDER BY ROWID DESC
+				) A
+		) B
+		WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
-
+	
 	<resultMap type="MemberVO" id="memberMap" autoMapping="true">
 		<id property="memId" column="MEM_ID" />
 		<collection property="buyList" javaType="java.util.HashSet" ofType="ProdVO" autoMapping="true">

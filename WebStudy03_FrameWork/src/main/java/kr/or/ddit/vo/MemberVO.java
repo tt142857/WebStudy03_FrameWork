@@ -39,6 +39,8 @@ import lombok.ToString;
 @Builder
 public class MemberVO implements Serializable {
 
+	private int rnum; 
+	
 	private String memId;
 	private transient String memPass;
 	private String memName;

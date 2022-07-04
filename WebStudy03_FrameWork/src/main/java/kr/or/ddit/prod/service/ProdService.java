@@ -3,6 +3,7 @@ package kr.or.ddit.prod.service;
 import java.util.List;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 /**
@@ -19,9 +20,10 @@ public interface ProdService {
 	
 	/**
 	 * 상품 목록 조회
+	 * @param pagingVO TODO
 	 * @return
 	 */
-	public List<ProdVO> retrieveProdList();
+	public List<ProdVO> retrieveProdList(PagingVO pagingVO);
 	
 	/**
 	 * 상품 상세 조회

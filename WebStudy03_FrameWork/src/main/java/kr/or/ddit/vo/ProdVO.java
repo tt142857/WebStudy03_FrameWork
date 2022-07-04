@@ -14,6 +14,9 @@ import lombok.ToString;
 @EqualsAndHashCode(of= {"prodId"})
 @ToString(exclude= {"prodDetail"})
 public class ProdVO implements Serializable {
+	
+	private int rnum;
+	
 	private String prodId;
 	private String prodName;
 	private String prodLgu;

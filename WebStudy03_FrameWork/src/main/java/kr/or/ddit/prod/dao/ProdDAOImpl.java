@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import kr.or.ddit.member.dao.MemberDAO;
 import kr.or.ddit.mybatis.CustomSqlSessionFactoryBuilder;
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 public class ProdDAOImpl implements ProdDAO {
@@ -17,27 +18,35 @@ public class ProdDAOImpl implements ProdDAO {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
-	public List<ProdVO> selectProdList() {
+	public int selectTotalRecord(PagingVO<ProdVO> pagingVO) {
 		try (
 			SqlSession sqlSession = SqlSessionFactory.openSession();
 		){
-			//return sqlSession.selectList("selectMemberList");
 			ProdDAO mapperProxy = sqlSession.getMapper(ProdDAO.class);
-			return mapperProxy.selectProdList();
+			return mapperProxy.selectTotalRecord(pagingVO);
+		}
+	}
+
+	@Override
+	public List<ProdVO> selectProdList(PagingVO<ProdVO> pagingVO) {
+		try (
+			SqlSession sqlSession = SqlSessionFactory.openSession();
+		){
+			ProdDAO mapperProxy = sqlSession.getMapper(ProdDAO.class);
+			return mapperProxy.selectProdList(pagingVO);
 		}
 	}
 
 	@Override
 	public ProdVO selectProd(String prodId) {
 		try (
-				SqlSession sqlSession = SqlSessionFactory.openSession();
-			){
-				//return sqlSession.selectList("selectMemberList");
-				ProdDAO mapperProxy = sqlSession.getMapper(ProdDAO.class);
-				return mapperProxy.selectProd(prodId);
-			}
+			SqlSession sqlSession = SqlSessionFactory.openSession();
+		){
+			ProdDAO mapperProxy = sqlSession.getMapper(ProdDAO.class);
+			return mapperProxy.selectProd(prodId);
+		}
 	}
 
 	@Override
