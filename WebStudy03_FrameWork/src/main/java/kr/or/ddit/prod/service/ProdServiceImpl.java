@@ -6,19 +6,12 @@ import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.PKNotFoundException;
 import kr.or.ddit.prod.dao.ProdDAO;
 import kr.or.ddit.prod.dao.ProdDAOImpl;
-import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 public class ProdServiceImpl implements ProdService {
 	ProdDAO prodDAO = new ProdDAOImpl();
-	
-	@Override
-	public ServiceResult createProd(ProdVO prod) {
-		return null;
-	}
 
-	
 	@Override
 	public List<ProdVO> retrieveProdList(PagingVO pagingVO) {
 		pagingVO.setTotalRecord(prodDAO.selectTotalRecord(pagingVO));
@@ -34,6 +27,18 @@ public class ProdServiceImpl implements ProdService {
 			throw new PKNotFoundException(String.format("%s 상품이 없음", prodId));
 		}
 		return prod;
+	}
+
+	@Override
+	public ServiceResult createProd(ProdVO prod) {
+		ServiceResult result = null;
+		int rowcnt = prodDAO.insertProd(prod);
+		if (rowcnt > 0) {
+			result = ServiceResult.OK;
+		} else {
+			result = ServiceResult.FAIL;
+		}
+		return result;
 	}
 
 	@Override

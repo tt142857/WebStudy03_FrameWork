@@ -40,7 +40,7 @@
 				    PROD_PRICE,  PROD_MILEAGE
 				FROM PRODVIEW
 				<include refid="sqlSearchFrag" />
-				ORDER BY PROD_ID DESC   
+				ORDER BY PROD_ID
 			) A
 		) B
 		
@@ -77,4 +77,29 @@
 		FROM PRODVIEW LEFT OUTER JOIN CARTMEMBER ON (PROD_ID = CART_PROD)
 		WHERE PROD_ID = #{prodId}
 	</select>
+	
+	<insert id="insertProd" parameterType="ProdVO">
+		<!-- prodId가 비어있다면 selectKey에서 생성해 prodId를 insert함 -->
+		<selectKey resultType="string" keyProperty="prodId" order="BEFORE">
+			SELECT #{prodLgu} || TRIM(TO_CHAR(COUNT(*) + 1, '000000')) FROM PROD WHERE PROD_ID LIKE #{prodLgu} || '%'
+		</selectKey>
+			INSERT INTO PROD (
+						PROD_ID, PROD_NAME, PROD_LGU,
+						PROD_BUYER, PROD_COST, PROD_PRICE,
+						PROD_SALE, PROD_OUTLINE, PROD_DETAIL,
+						PROD_IMG, PROD_TOTALSTOCK, PROD_INSDATE,
+						PROD_PROPERSTOCK, PROD_SIZE, PROD_COLOR,
+						PROD_DELIVERY, PROD_UNIT, PROD_QTYIN,
+						PROD_QTYSALE, PROD_MILEAGE
+			)
+			VALUES(
+						#{prodId, jdbcType=VARCHAR}, #{prodName, jdbcType=VARCHAR}, #{prodLgu, jdbcType=CHAR},
+						#{prodBuyer, jdbcType=CHAR}, #{prodCost, jdbcType=NUMERIC}, #{prodPrice, jdbcType=NUMERIC},
+						#{prodSale, jdbcType=NUMERIC}, #{prodOutline, jdbcType=VARCHAR}, #{prodDetail, jdbcType=CLOB},
+						#{prodId, jdbcType=VARCHAR} || '.jpg', #{prodTotalstock, jdbcType=NUMERIC}, SYSDATE,
+						#{prodProperstock, jdbcType=NUMERIC}, #{prodSize, jdbcType=VARCHAR}, #{prodColor, jdbcType=VARCHAR},
+						#{prodDelivery, jdbcType=VARCHAR}, #{prodUnit, jdbcType=VARCHAR}, #{prodQtyin, jdbcType=NUMERIC},
+						#{prodQtysale, jdbcType=NUMERIC}, #{prodMileage, jdbcType=NUMERIC}
+			)
+	</insert>
 </mapper>

@@ -13,11 +13,6 @@ import kr.or.ddit.vo.ProdVO;
 public class ProdDAOImpl implements ProdDAO {
 
 	private SqlSessionFactory SqlSessionFactory = CustomSqlSessionFactoryBuilder.getSqlSessionFactory();
-	@Override
-	public int insertProd(ProdVO prod) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	@Override
 	public int selectTotalRecord(PagingVO<ProdVO> pagingVO) {
@@ -48,7 +43,19 @@ public class ProdDAOImpl implements ProdDAO {
 			return mapperProxy.selectProd(prodId);
 		}
 	}
-
+	
+	@Override
+	public int insertProd(ProdVO prod) {
+		try (
+			SqlSession sqlSession = SqlSessionFactory.openSession();
+		){
+			ProdDAO mapperProxy = sqlSession.getMapper(ProdDAO.class);
+			int rowcnt = mapperProxy.insertProd(prod); 
+			sqlSession.commit();
+			return rowcnt; 
+		}
+	}
+	
 	@Override
 	public int updateProd(ProdVO prod) {
 		// TODO Auto-generated method stub

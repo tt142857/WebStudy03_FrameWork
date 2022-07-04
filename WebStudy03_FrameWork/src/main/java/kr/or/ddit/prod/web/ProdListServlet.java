@@ -54,22 +54,19 @@ public class ProdListServlet extends HttpServlet {
 		// pagingVO.setSimpleCondition(searchVO);
 		pagingVO.setDetailCondition(detailCondition);
 		
-		List<ProdVO> prodList = service.retrieveProdList(pagingVO);
-		List<Map<String, Object>> lprodList = othersDAO.selectLprodList();
-		List<BuyerVO> buyerList = othersDAO.selectBuyerList();
-		req.setAttribute("pagingVO", pagingVO);
-		req.setAttribute("lprodList", lprodList);
-		req.setAttribute("buyerList", buyerList);
+		service.retrieveProdList(pagingVO);
 		
-		if(ObjectUtils.isNotEmpty(prodList)) {
-			req.setAttribute("prodList", prodList);
-		}
+		req.setAttribute("pagingVO", pagingVO);
+		
 		String viewName = "forward:/jsonView.do";
 		new DelegatingViewResolver().viewResolve(viewName, req, resp);
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("lprodList", othersDAO.selectLprodList());
+		req.setAttribute("buyerList", othersDAO.selectBuyerList());
+		
 		String accept = req.getHeader("accept");
 		
 		if(StringUtils.containsIgnoreCase(accept, "json")) {

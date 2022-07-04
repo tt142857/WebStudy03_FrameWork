@@ -56,14 +56,17 @@
 	<input type="text" name="page" />
 </form>
 
+<button id="formBtn" class="btn btn-primary">상품등록</button>
+
 <script>
 	let listBody = $("#listBody");
 	let pagingArea = $(".pagingArea");
 	let searchUI = $("#searchUI");
-	<c:url value="/prod/prodView.do" var="viewURL">
-		<c:param name="who" value="prodId" />
+	
+	<c:url value="/prod/prodView.do" var="prodViewURL">
+		<c:param name="what" value="prodId" />
 	</c:url>
-	const VIEWURL = "${viewURL}";
+	const VIEWURL = "${prodViewURL}";
 	let makeSingleTr = function(index, prod) {
 		let aTag = $("<a>").attr({
 			"href" : VIEWURL.replace("prodId", prod.prodId),
@@ -89,7 +92,6 @@
 		let method = this.method;
 		let data = $(this).serialize();
 		
-		
 		$.ajax({
 			url : url,
 			method : method,
@@ -106,7 +108,7 @@
 				} else {
 					let trTag = $("<tr>").html(
 									$("<td>").attr("colspan", "6")	
-											 .html("회원이 아직 없음")
+											 .html("상품이 없음")
 								);
 					trTags.push(trTag);
 				}
@@ -122,19 +124,19 @@
 		return false;
 	}).submit();
 	
-	$("[name='prodBuyer']").val("${pagingVO.detailCondition.prodBuyer}");
+	$("[name=prodBuyer]").val("${pagingVO.detailCondition.prodBuyer}");
 	$("[name=prodLgu]").on("change", function(event) {
 		let selectedLgu = $(this).val();
 		let options = $(this).siblings("[name=prodBuyer]").find("option");
-		$.each(options,function(idx, opt) {
-			if(idx == 0 || $(this).hasClass(selectedLgu)) {
+		$.each(options, function(idx, opt){
+			if(!selectedLgu||idx == 0 || $(this).hasClass(selectedLgu)){
 				$(this).show();
-			}
-			else {
+			}else{
 				$(this).hide();
 			}
 		});
 	}).val("${pagingVO.detailCondition.prodLgu}").trigger("change");
+	
 	$("[name='prodName']").val("${pagingVO.detailCondition.prodName}");
 	
 	$(".pagingArea").on("click", "a", function(event) {
@@ -150,6 +152,10 @@
 			let value = $(this).val();
 			searchForm.find("[name=" + name + "]").val(value);
 		});
-		//searchForm.submit();
+		searchForm.submit();
+	});
+	
+	$("#formBtn").on("click", function(event) {
+		location.href = "${cPath }/prod/prodInsert.do";
 	});
 </script>

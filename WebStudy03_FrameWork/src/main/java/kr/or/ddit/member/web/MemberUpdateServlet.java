@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.DelegatingViewResolver;
+import kr.or.ddit.validate.UpdateGroup;
+import kr.or.ddit.validate.ValidateUtils;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/member/memberUpdate.do")
@@ -65,7 +66,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		
-		boolean valid = validate(member, errors);
+		boolean valid = ValidateUtils.validate(member, errors, UpdateGroup.class);
 		String viewName = null;
 		
 		if (valid) {
@@ -89,14 +90,5 @@ public class MemberUpdateServlet extends HttpServlet {
 			viewName = "/member/memberForm.tiles";
 		}
 		new DelegatingViewResolver().viewResolve(viewName, req, resp);
-	}
-
-	private boolean validate(MemberVO member, Map<String, String> errors) {
-		boolean valid = true;
-		if (StringUtils.isBlank(member.getMemPass())) {
-			errors.put("memPass", "비밀번호 누락");
-			valid = false;
-		}
-		return valid;
 	}
 }
