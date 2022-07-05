@@ -56,14 +56,6 @@ public class MemberDAOTest {
 	}
 
 	@Test
-	public void testSelectMemberList() {
-		List<MemberVO> memberList = dao.selectMemberList();
-		assertNotNull(memberList);
-		assertNotEquals(0, memberList.size());
-		System.out.println(memberList);
-	}
-	
-	@Test
 	public void testUpdateMember() {
 		MemberVO member = new MemberVO();
 		member.setMemName("엄준식");

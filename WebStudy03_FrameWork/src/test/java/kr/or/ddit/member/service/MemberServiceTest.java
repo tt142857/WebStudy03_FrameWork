@@ -35,13 +35,6 @@ public class MemberServiceTest {
 		result = service.createMember(member);
 		assertEquals(ServiceResult.OK, result);
 	}
-
-	@Test
-	public void testRetrieveMemberList() {
-		List<MemberVO> memberList = service.retrieveMemberList();
-		assertNotNull(memberList);
-	}
-
 }
 
 

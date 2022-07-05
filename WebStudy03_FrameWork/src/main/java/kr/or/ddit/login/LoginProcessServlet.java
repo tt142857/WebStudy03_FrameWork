@@ -33,7 +33,6 @@ public class LoginProcessServlet extends HttpServlet{
 			return;
 		}
 		
-		req.setCharacterEncoding("UTF-8"); // 모든 컨트롤러의 첫번째
 		MemberVO inputData = new MemberVO();
 		inputData.setMemId(req.getParameter("memId"));
 		inputData.setMemPass(req.getParameter("memPass"));

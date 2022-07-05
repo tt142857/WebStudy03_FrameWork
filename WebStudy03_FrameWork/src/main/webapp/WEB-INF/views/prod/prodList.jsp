@@ -36,7 +36,7 @@
 					<select name="prodBuyer">
 						<option value>거래처명</option>
 							<c:forEach items="${buyerList }" var="buyer">
-							<option value="${buyer['buyerId'] }">${buyer['buyerName'] }</option> 
+							<option value="${buyer['buyerId'] }" class="${buyer.buyerLgu }">${buyer['buyerName'] }</option> 
 						</c:forEach>
 					</select>
 					<input type="text" name="prodName" placeholder="상품명" />
@@ -62,7 +62,6 @@
 	let listBody = $("#listBody");
 	let pagingArea = $(".pagingArea");
 	let searchUI = $("#searchUI");
-	
 	<c:url value="/prod/prodView.do" var="prodViewURL">
 		<c:param name="what" value="prodId" />
 	</c:url>
@@ -124,7 +123,7 @@
 		return false;
 	}).submit();
 	
-	$("[name=prodBuyer]").val("${pagingVO.detailCondition.prodBuyer}");
+	let prodBuyerTag = $("[name=prodBuyer]").val("${pagingVO.detailCondition.prodBuyer}");
 	$("[name=prodLgu]").on("change", function(event) {
 		let selectedLgu = $(this).val();
 		let options = $(this).siblings("[name=prodBuyer]").find("option");

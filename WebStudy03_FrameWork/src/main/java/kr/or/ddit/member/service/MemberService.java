@@ -19,7 +19,7 @@ public interface MemberService {
 	 */
 	public ServiceResult createMember(MemberVO member);
 	
-	public List<MemberVO> retrieveMemberList(PagingVO pagingVO);
+	public List<MemberVO> retrieveMemberList(PagingVO<MemberVO> pagingVO);
 	
 	/**
 	 * 회원 상세 조회

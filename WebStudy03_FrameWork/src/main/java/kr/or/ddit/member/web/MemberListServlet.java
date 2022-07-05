@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
@@ -25,6 +27,8 @@ import kr.or.ddit.vo.SimpleSearchCondition;
  */
 @WebServlet("/member/memberList.do")
 public class MemberListServlet extends HttpServlet {
+	private static final Logger log = LoggerFactory.getLogger(MemberListServlet.class);
+	
 	MemberService service = new MemberServiceImpl();
 	
 	private void processHTML(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,12 +37,11 @@ public class MemberListServlet extends HttpServlet {
 	}
 	
 	private void processJsonData(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		
 		String searchType = req.getParameter("searchType");
 		String searchWord = req.getParameter("searchWord");
 		SimpleSearchCondition searchVO = new SimpleSearchCondition(searchType, searchWord);
 		
+		log.info("searchType : {}, searchWord : {}", searchType, searchWord); // slf는 {}와 같이 구멍을 뚫어줄 수 있음.
 		String pageParam = req.getParameter("page");
 		int currentPage = 1;
 		if(StringUtils.isNumeric(pageParam)) {

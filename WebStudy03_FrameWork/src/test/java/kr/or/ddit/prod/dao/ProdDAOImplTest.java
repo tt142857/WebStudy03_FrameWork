@@ -19,10 +19,4 @@ public class ProdDAOImplTest {
 		System.out.println(prod);
 	}
 	
-	@Test
-	public void testSelectProdList() {
-		List<ProdVO> prodList = dao.selectProdList(pagingVO);
-		assertNotNull(prodList);
-		System.out.println(prodList.get(1).getProdInsdate());
-	}
 }

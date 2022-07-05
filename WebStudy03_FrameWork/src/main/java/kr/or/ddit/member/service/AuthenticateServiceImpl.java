@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.dao.MemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
+import kr.or.ddit.security.PasswordUtils;
 import kr.or.ddit.vo.MemberVO;
 
 public class AuthenticateServiceImpl implements AuthenticateService {
@@ -19,7 +20,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 		if(member != null) {
 			String inputPass = inputData.getMemPass();
 			String savedPass = member.getMemPass();
-			if(savedPass.equals(inputPass)) {
+			if(PasswordUtils.matche(inputPass, savedPass)) {
 				try {
 					BeanUtils.copyProperties(inputData, member);
 				} catch (IllegalAccessException | InvocationTargetException e) {

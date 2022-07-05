@@ -54,7 +54,6 @@ public class MemberUpdateServlet extends HttpServlet {
 		// 검증을 통과하면 로직을 사용하여 수정
 		// 통과하지 못하면, 기존 입력 데이터의 검증 결과 데이터를 가지고 view layer로 이동
 		
-		req.setCharacterEncoding("UTF-8");
 		MemberVO member = new MemberVO();
 		req.setAttribute("member", member);
 		try {

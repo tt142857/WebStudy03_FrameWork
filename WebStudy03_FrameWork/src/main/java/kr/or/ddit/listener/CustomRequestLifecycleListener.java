@@ -1,6 +1,5 @@
 package kr.or.ddit.listener;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;

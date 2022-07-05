@@ -35,8 +35,6 @@ public class ProdListServlet extends HttpServlet {
 	}
 	
 	private void processJsonData(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		
 		ProdVO detailCondition = new ProdVO();
 		try {
 			BeanUtils.populate(detailCondition, req.getParameterMap());
