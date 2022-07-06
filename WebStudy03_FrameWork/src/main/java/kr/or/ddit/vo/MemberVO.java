@@ -85,4 +85,6 @@ public class MemberVO implements Serializable {
 
 	// 구매기록, 중복허용 X
 	private Set<ProdVO> buyList; // has many
+	
+	private String memRole;
 }

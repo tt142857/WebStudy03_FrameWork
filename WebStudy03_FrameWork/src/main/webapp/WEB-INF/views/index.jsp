@@ -29,7 +29,7 @@
 		<%
 	}else{
 		%>
-		<a href="${cPath }/myPage.do"><%=authMember.getMemName() %></a>님
+		<a href="${cPath }/myPage.do"><%=authMember.getMemName() %> ${authMember.memRole}</a>님
 		<form id="logoutForm" method="post" action="${pageContext.request.contextPath }/login/logout.do"></form> 
 		<a id="logoutBtn" href="${pageContext.request.contextPath }/login/logout.do">로그아웃</a>
 		<script type="text/javascript">

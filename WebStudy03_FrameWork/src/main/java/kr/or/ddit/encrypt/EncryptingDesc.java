@@ -21,12 +21,13 @@ import javax.crypto.spec.IvParameterSpec;
 /**
  * Encrypting(암호화) : 데이터 보호를 목적으로 허가받지 않은 사용자가 읽을 수 없는 
  * 					   표현방식으로 데이터 표현을 바꾸는 과정
- *   단방향 암호화(hash 함수) : 비밀번호 암호화에 사용 ex) SHA-512
- *   hash ?? 입력데이터에 대해 일정 길이로 만들어지는 코드값 
+ *   - 단방향 암호화(hash 함수) : 비밀번호 암호화에 사용 ex) SHA-512
+ *      + hash ?? 입력데이터에 대해 일정 길이로 만들어지는 코드값 
  *   
- *   양방향 암호화 : 전송 데이터 보호에 사용, 전자 서명에 사용 (Java Crypto Library - Cipher)
- *   	- 대칭키 방식(비밀키 방식) : 하나의 비밀키로 암호화와 복호화를 수행
- *   	- 비대칭키 방식(공개키 방식) : 한쌍의 키(공개키/개인키)로 암복호화 수행 ex) RSA
+ *   - 양방향 암호화 : 전송 데이터 보호에 사용, 전자 서명에 사용 (Java Crypto Library - Cipher)
+ *   	+ 대칭키 방식(비밀키 방식) : 하나의 비밀키로 암호화와 복호화를 수행 ex) AES(128, 256)
+ *   	+ 비대칭키 방식(공개키 방식) : 한쌍의 키(공개키/개인키)로 암복호화 수행 ex) RSA(1024, 2048)
+ * 
  * Encoding(부호화)/Decoding : 데이터를 전송하거나 저장하기 위해 사용할 매체가 인지할 수 있는 
  * 							  표현방식으로 데이터의 표현을 바꾸는 과정
  *   ex) URLEncdoing(Percent Encoding), Base64
@@ -35,8 +36,8 @@ public class EncryptingDesc {
 	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
 		String plain = "java";
 		
-		//encryptSha512(plain);
-		encrypteAESExample(plain);
+		encryptSha512(plain);
+		//encryptAESExample(plain);
 		//encryptRSAExample(plain);
 	}
 	
@@ -56,7 +57,7 @@ public class EncryptingDesc {
 		return encoded;
 	}
 	
-	public static void encrypteAESExample(String plain) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+	public static void encryptAESExample(String plain) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		
 		KeyGenerator keyGen = KeyGenerator.getInstance("AES");

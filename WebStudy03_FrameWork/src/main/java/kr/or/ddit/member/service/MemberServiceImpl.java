@@ -119,7 +119,7 @@ public class MemberServiceImpl implements MemberService {
 	public ServiceResult createMember(MemberVO member) {
 		ServiceResult result = null;
 		if (memberDao.selectMemberForAuth(member) == null) {
-			encryptMember(member);
+			//encryptMember(member);
 			
 			int rowcnt = memberDao.insertMember(member);
 			if (rowcnt > 0) {
@@ -148,7 +148,7 @@ public class MemberServiceImpl implements MemberService {
 			throw new PKNotFoundException(String.format("%s 아이디를 가진 회원이 없음", memId));
 		}
 		else {
-			decryptMember(member);
+			//decryptMember(member);
 		}
 		return member;
 	}

@@ -33,7 +33,7 @@
 	</select>
 	
 	<select id="selectMemberForAuth" parameterType="MemberVO" resultType="MemberVO">
-		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_HP, MEM_ADD1
+		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_HP, MEM_ADD1, MEM_ROLE
 		FROM MEMBER
 		WHERE MEM_ID = #{memId}
 		AND MEM_DELETE IS NULL
@@ -81,8 +81,9 @@
           	 MEM_ZIP,         MEM_ADD1,             MEM_ADD2,              
           	 MEM_HOMETEL,     MEM_COMTEL,           MEM_HP,            
           	 MEM_MAIL,        MEM_JOB,              MEM_LIKE,              
-          	 MEM_MEMORIAL,    MEM_MEMORIALDAY,      MEM_MILEAGE,        MEM_DELETE,
-          	 PROD_ID,		  PROD_NAME, 			PROD_COST, 			PROD_PRICE,
+          	 MEM_MEMORIAL,    MEM_MEMORIALDAY,      MEM_MILEAGE,       
+          	 MEM_DELETE, 	  MEM_ROLE,
+        	 PROD_ID,		  PROD_NAME, 			PROD_COST, 			PROD_PRICE,
           	 BUYER_NAME, 	  LPROD_NM
       	FROM MEMBER LEFT OUTER JOIN CARTPROD ON (MEM_ID = CART_MEMBER)
       	WHERE MEM_ID = #{memId}                                  
