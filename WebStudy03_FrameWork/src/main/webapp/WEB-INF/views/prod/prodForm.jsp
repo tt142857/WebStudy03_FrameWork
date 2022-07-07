@@ -4,8 +4,8 @@
 
 <script src="${cPath }/resources/js/jquery.validator/jquery.validate.min.js"></script>
 
-<form method="post" id="insertForm"> <!-- 안되면 다시 action 넣어보기 -->
-	<table>
+<form method="post" id="insertForm" enctype="multipart/form-data"> <!-- 안되면 다시 action 넣어보기 -->
+	<table class="table table-bordered">
 		<tr>
 			<th>상품명</th>
 			<td><input type="text" name="prodName" value="${prod['prodName'] }" required /><span class="error">${errors['prodName'] }</span></td></td>
@@ -52,6 +52,13 @@
 		<tr>
 			<th>상세설명</th>
 			<td><input type="text" name="prodDetail" value="${prod['prodDetail'] }"/></td>
+		</tr>
+		<tr>
+			<th>이미지</th>
+			<td>
+				<input type="file" class="form-control" name="prodImage" />
+				<span class="error">${errors["prodImg"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>총재고</th>

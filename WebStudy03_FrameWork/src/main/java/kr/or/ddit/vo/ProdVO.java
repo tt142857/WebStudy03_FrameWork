@@ -7,6 +7,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.groups.Default;
 
+import org.apache.commons.fileupload.FileItem;
+
+import kr.or.ddit.filter.multipart.MultipartFile;
 import kr.or.ddit.validate.DeleteGroup;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.UpdateGroup;
@@ -41,6 +44,10 @@ public class ProdVO implements Serializable {
 	private String prodOutline;
 	private String prodDetail;
 	private String prodImg;
+	
+	// 서블릿 스펙버전에 상관없이 하기 위해 MultipartFile으로 타입을 둠
+	private MultipartFile prodImage;
+	
 	private Integer prodTotalstock;
 	private String prodInsdate;
 	private Integer prodProperstock;
