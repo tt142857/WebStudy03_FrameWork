@@ -28,7 +28,7 @@ public class MultipartFilter implements Filter {
 		String encType = request.getContentType();
 		if(encType != null && encType.startsWith("multipart/")) { // body가 있는 경우와 multipart 요청이 있는 경우
 			StandardMultipartHttpServletRequest wrapper = new StandardMultipartHttpServletRequest((HttpServletRequest) request);
-			chain.doFilter(request, response);
+			chain.doFilter(wrapper, response);
 		} else {
 			chain.doFilter(request, response);
 		}

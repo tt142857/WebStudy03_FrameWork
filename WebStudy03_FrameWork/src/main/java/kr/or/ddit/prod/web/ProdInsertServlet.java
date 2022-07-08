@@ -74,6 +74,7 @@ public class ProdInsertServlet extends HttpServlet {
 		if(!imageFolder.exists()) {
 			imageFolder.mkdirs();
 		} // 폴더가 존재하지 않으면 폴더를 생성함
+		
 		String imageSaveName = UUID.randomUUID().toString();
 		
 		File prodImageFile = new File(imageFolder, imageSaveName); // 경로와 아이템을 설정 

@@ -96,7 +96,7 @@
 						#{prodId, jdbcType=VARCHAR}, #{prodName, jdbcType=VARCHAR}, #{prodLgu, jdbcType=CHAR},
 						#{prodBuyer, jdbcType=CHAR}, #{prodCost, jdbcType=NUMERIC}, #{prodPrice, jdbcType=NUMERIC},
 						#{prodSale, jdbcType=NUMERIC}, #{prodOutline, jdbcType=VARCHAR}, #{prodDetail, jdbcType=CLOB},
-						#{prodId, jdbcType=VARCHAR} || '.jpg', #{prodTotalstock, jdbcType=NUMERIC}, SYSDATE,
+						#{prodImg, jdbcType=VARCHAR}, #{prodTotalstock, jdbcType=NUMERIC}, SYSDATE,
 						#{prodProperstock, jdbcType=NUMERIC}, #{prodSize, jdbcType=VARCHAR}, #{prodColor, jdbcType=VARCHAR},
 						#{prodDelivery, jdbcType=VARCHAR}, #{prodUnit, jdbcType=VARCHAR}, #{prodQtyin, jdbcType=NUMERIC},
 						#{prodQtysale, jdbcType=NUMERIC}, #{prodMileage, jdbcType=NUMERIC}
